@@ -8,6 +8,7 @@ import {
   processors,
   paymentMethods,
 } from "../utils";
+import { getAllPayments } from "../app/paymentAPI";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,6 @@ const Container = styled.div`
   padding: 10px;
   display: inline-flex;
   align-items: center;
-  //border: 1px solid #282c34;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   background-color: #ffffff;
@@ -39,9 +39,6 @@ const SearchInput = styled.input`
   padding: 5px 10px;
   font-size: 14px;
   border: unset;
-  //display: flex;
-  //align-items: center;
-  //background: papayawhip;
 `;
 
 type QueryFields = {
@@ -52,26 +49,35 @@ type QueryFields = {
   orderId?: string;
 };
 
-const TransactionFilter = ({ payments, updatePayments }) => {
+const TransactionFilter = ({
+  payments,
+  updatePayments,
+  updateLoadingStatus,
+}) => {
   const [selectedStatus, setSelectedStatus] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("ALL");
   const [selectedProcessor, setSelectedProcessor] = useState("ALL");
   const [selectedCurrency, setSelectedCurrency] = useState("ALL");
+  const [filtering, setFiltering] = useState(false);
 
   const onMethodChange = (value: string) => {
+    setFiltering(true);
     setSelectedMethod(value);
   };
 
   const onProcessorChange = (value: string) => {
+    setFiltering(true);
     setSelectedProcessor(value);
   };
 
   const onCurrencyChange = (value: string) => {
+    setFiltering(true);
     setSelectedCurrency(value);
   };
 
   const onStatusChange = (value: string) => {
+    setFiltering(true);
     setSelectedStatus(value);
   };
 
@@ -80,7 +86,9 @@ const TransactionFilter = ({ payments, updatePayments }) => {
   };
 
   useEffect(() => {
-    if (payments.length) {
+    console.log("ffff");
+    console.log(filtering);
+    if (payments.length && filtering) {
       getFilteredData();
     }
   }, [
@@ -89,81 +97,64 @@ const TransactionFilter = ({ payments, updatePayments }) => {
     selectedStatus,
     selectedCurrency,
     payments,
+    filtering,
   ]);
 
   const getQueryFields = () => {
     const queryFields: QueryFields = {
       ...(selectedStatus !== "ALL" && { status: selectedStatus }),
-      ...(selectedMethod !== "ALL" && { method: selectedMethod }),
       ...(selectedProcessor !== "ALL" && { processor: selectedProcessor }),
-      ...(selectedCurrency !== "ALL" && { currencyCode: selectedCurrency }),
-      // status: selectedStatus !== "ALL" ? selectedStatus : undefined,
-      // method: selectedMethod !== "ALL" ? selectedMethod : undefined,
-      // processor: selectedProcessor !== "ALL" ? selectedProcessor : undefined,
-      // currencyCode: selectedCurrency !== "ALL" ? selectedCurrency : undefined,
-      // orderId: undefined,
+      ...(selectedCurrency !== "ALL" && { currency_code: selectedCurrency }),
     };
-    if (searchQuery.length > 0) {
-      queryFields.orderId = searchQuery;
-    }
-    return queryFields;
+    return new URLSearchParams(queryFields).toString();
   };
 
-  const getFilteredData = () => {
-    console.log("filteredData");
-    const filterPayload = getQueryFields();
-    console.log("payments");
-    console.log(payments);
-    console.log(filterPayload);
-    const filteredData = payments.filter((item) => {
-      for (let key in filterPayload) {
-        // console.log("key");
-        // console.log(key);
-        console.log(item[key]);
-        console.log(filterPayload[key]);
-        // console.log(filterPayload[key] !== method);
-        // console.log(
-        //
-        // );
-        // console.log(item[key]);
+  const getOtherQueryParams = () => {
+    // filters not supported by api
+    const queryParams: QueryFields = {
+      ...(selectedMethod !== "ALL" && { method: selectedMethod }),
+    };
+    if (searchQuery.length > 0) {
+      queryParams.orderId = searchQuery;
+    }
+    return queryParams;
+  };
+
+  const getFilteredData = async () => {
+    updateLoadingStatus(true);
+
+    let queryString = getQueryFields();
+
+    queryString = queryString ? "?" + queryString : "";
+
+    const { data: newPaymentData } = await getAllPayments({ queryString });
+    const otherQueryParams = getOtherQueryParams();
+    const filteredData = newPaymentData.filter((item) => {
+      for (const key in otherQueryParams) {
         if (key === "method") {
           const method =
             item?.paymentInstrument?.paymentInstrumentData?.binData?.network;
-          const isMotMethod = filterPayload[key] !== method;
-          if (isMotMethod) {
+          const isNotMethod = otherQueryParams[key] !== method;
+          if (isNotMethod) {
             return false;
           }
-        } else if (key !== "method" && item[key] === undefined) {
-          // console.log("und");
-          // console.log(key);
-          // console.log(item);
-          return false;
         } else if (
           key === "orderId" &&
-          !item[key].toLowerCase().includes(filterPayload[key].toLowerCase())
+          !item[key].toLowerCase().includes(otherQueryParams[key].toLowerCase())
         ) {
-          console.log("ord");
-          return false;
-        } else if (
-          !["method", "orderId"].includes(key) &&
-          filterPayload[key] !== item[key]
-        ) {
-          console.log("sel");
           return false;
         }
-        // return true;
       }
-      console.log("here");
       return true;
     });
-    console.log(filteredData);
-    // if (filteredData.length) {
     updatePayments(filteredData);
-    // }
+    updateLoadingStatus(false);
+    setFiltering(false);
   };
 
   const debouncedSearch = useCallback(
     debounce(() => {
+      setFiltering(true);
       getFilteredData();
     }, 1000),
     [searchQuery] // will be created only once initially

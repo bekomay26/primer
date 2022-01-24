@@ -1,8 +1,10 @@
 import api from "./api";
 
-export const getAllPayments = async () => {
-  const response = await api.get("payments");
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+type QueryStringType = {
+  queryString?: string;
+};
+export const getAllPayments = async ({ queryString }: QueryStringType) => {
+  const response = await api.get(`payments${queryString || ""}`);
   return response.data;
 };
 

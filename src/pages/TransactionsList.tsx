@@ -13,12 +13,13 @@ const Head = styled.div`
 const Body = styled.div`
   //display: table;
 `;
+
 const TransactionsList = () => {
   const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([]);
   const [filteredPayments, setFilteredPayments] = useState([]);
   const fetchPayments = async () => {
-    const { data: paymentsData }: { data: any[] } = await getAllPayments();
+    const { data: paymentsData }: { data: any[] } = await getAllPayments({});
     setPayments(paymentsData);
     setFilteredPayments(paymentsData);
     setLoading(false);
@@ -31,16 +32,19 @@ const TransactionsList = () => {
     setFilteredPayments(newPaymentList);
   };
 
-  if (loading) {
-    return <LoaderOverlay />;
-  }
+  const updateLoadingStatus = (isLoading) => {
+    setLoading(isLoading);
+  };
+
   return (
     <div>
+      {loading && <LoaderOverlay />}
       <Head>
         <p>Transactions</p>
         <TransactionFilter
           payments={payments}
           updatePayments={onUpdateFilterPayments}
+          updateLoadingStatus={updateLoadingStatus}
         />
       </Head>
       <Body>

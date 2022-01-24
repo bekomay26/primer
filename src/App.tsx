@@ -8,8 +8,8 @@ function App() {
   return (
     <AuthProvider>
       <div className="App">
-        {/*<TransactionsList />*/}
-        <TransactionDetail id={"GkjaEpEr"} />
+        <TransactionsList />
+        {/*<TransactionDetail id={"GkjaEpEr"} />*/}
       </div>
     </AuthProvider>
   );
