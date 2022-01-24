@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -79,7 +79,11 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>("ALL");
 
-  const toggling = () => setIsOpen(!isOpen);
+  const onToggle = () => {
+    console.log("isOpen");
+    console.log(isOpen);
+    setIsOpen(!isOpen);
+  };
 
   const onOptionClicked = (value: string) => () => {
     onChange(value);
@@ -87,11 +91,29 @@ export default function Dropdown({
     setIsOpen(false);
   };
 
+  // const onClose = () => {
+  //   setIsOpen(false);
+  // };
+
+  // useEffect(() => {
+  //   console.log("aaa");
+  //   // setTimeout(() => {
+  //   if (isOpen) {
+  //     console.log("ddd");
+  //     window.addEventListener("click", onClose);
+  //   } else {
+  //     console.log("eee");
+  //     window.removeEventListener("click", onClose);
+  //   }
+  //   // }, 0);
+  //   // return window.removeEventListener("click", onClose);
+  // }, [isOpen]);
+
   return (
     <Wrapper>
       <Paragraph>{title}</Paragraph>
       <DropDownContainer>
-        <DropDownHeader onClick={toggling}>{selectedOption}</DropDownHeader>
+        <DropDownHeader onClick={onToggle}>{selectedOption}</DropDownHeader>
         {isOpen && (
           <DropDownListContainer>
             <DropDownList>

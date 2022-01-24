@@ -25,6 +25,12 @@ export const formatDate = (dateString: string) => {
     second: "numeric",
   }).format(theDate);
 };
+export const formatAmount = (amount: number, currency: string) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+  }).format(amount / 100);
+};
 
 export const transactionStatuses = [
   { label: "All", value: "ALL" },
@@ -42,6 +48,12 @@ export const transactionCurrencies = [
   { label: "GBP", value: "GBP" },
   { label: "USD", value: "USD" },
 ];
+
+export const currencyToSymbol = {
+  USD: "$", // US Dollar
+  EUR: "€", // Euro
+  GBP: "£", // British Pound Sterling
+};
 
 export const processors = [
   { label: "All", value: "ALL" },

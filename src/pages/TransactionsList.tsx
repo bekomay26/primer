@@ -4,6 +4,7 @@ import { getAllPayments } from "../app/paymentAPI";
 import TransactionItem from "../components/TransactionItem";
 import { formatDate } from "../utils";
 import TransactionFilter from "../components/TransactionsFilter";
+import LoaderOverlay from "../components/LoaderOverlay";
 
 const Head = styled.div`
   background-color: #dde2dc;
@@ -13,24 +14,26 @@ const Body = styled.div`
   //display: table;
 `;
 const TransactionsList = () => {
+  const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([]);
   const [filteredPayments, setFilteredPayments] = useState([]);
   const fetchPayments = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { data: paymentsData }: { data: any[] } = await getAllPayments();
-    console.log("paymentsData");
-    console.log(paymentsData.map((pay) => pay.currencyCode));
     setPayments(paymentsData);
     setFilteredPayments(paymentsData);
+    setLoading(false);
   };
   useEffect(() => {
     void fetchPayments();
   }, []);
-  // console.log("payments");
-  // console.log(payments);
+
   const onUpdateFilterPayments = (newPaymentList) => {
     setFilteredPayments(newPaymentList);
   };
+
+  if (loading) {
+    return <LoaderOverlay />;
+  }
   return (
     <div>
       <Head>
