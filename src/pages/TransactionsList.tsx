@@ -51,6 +51,7 @@ const TransactionsList = () => {
         {filteredPayments?.map((pay) => (
           <TransactionItem
             key={pay.id}
+            id={pay.id}
             amount={new Intl.NumberFormat().format(pay.amount / 100)}
             status={pay.status}
             date={formatDate(pay.date)}

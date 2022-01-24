@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { currencyToSymbol } from "../utils";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getPaymentDetail } from "../app/paymentAPI";
+import { pagesMapping, RoutingContext } from "./Router";
 
 const Wrapper = styled.div`
   padding: 5px 10px;
@@ -64,9 +65,10 @@ const TransactionDetailHeader = ({
   amountRefunded,
   amountCaptured,
 }: AmountDetailType) => {
+  const { setPage } = useContext(RoutingContext);
   return (
     <Wrapper>
-      <Nav>Transactions</Nav>
+      <Nav onClick={() => setPage(pagesMapping.list)}>Transactions</Nav>
       <SummaryDiv>
         <AmountText>
           <span>{amount}</span>

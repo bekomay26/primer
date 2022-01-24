@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import TransactionStatus from "../pages/TransactionStatus";
 import TransactionProcessorAndMethod from "../pages/TransactionProcessorAndMethod";
+import { RoutingContext } from "./Router";
+import { useContext } from "react";
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -47,6 +49,7 @@ const DateText = styled.p`
 `;
 
 const TransactionItem = ({
+  id,
   currency,
   amount,
   status,
@@ -56,6 +59,12 @@ const TransactionItem = ({
   refunded,
   date,
 }) => {
+  const { setPage, setUrlId } = useContext(RoutingContext);
+
+  const onClick = () => {
+    setPage("detail");
+    setUrlId(id);
+  };
   return (
     <Wrapper>
       <AmountText>
@@ -74,6 +83,7 @@ const TransactionItem = ({
       <OrderText>{orderId}</OrderText>
       <RefundText>{refunded && "Refunded"}</RefundText>
       <DateText>{date}</DateText>
+      <p onClick={onClick}>Click</p>
     </Wrapper>
   );
 };
