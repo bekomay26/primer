@@ -24,10 +24,29 @@ export const Container = styled.div`
     border-right: 1px solid #282c34;
   }
   justify-content: flex-end;
+  @media (max-width: 600px) {
+    width: 100%;
+    border-radius: unset;
+    flex-wrap: wrap;
+    & > input {
+      border: 1px solid #282c34;
+    }
+    & > div {
+      margin-left: unset;
+      margin-bottom: 5px;
+      border-right: unset;
+      width: 100%;
+    }
+  }
 `;
 
 export const SearchInput = styled.input`
   padding: 5px 10px;
   font-size: 14px;
   border: unset;
+  @media (max-width: 600px) {
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
 `;

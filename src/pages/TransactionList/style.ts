@@ -5,5 +5,11 @@ export const Head = styled.div`
   padding: 30px 10px;
 `;
 export const Body = styled.div`
-  //display: table;
+  padding-bottom: 20px;
+`;
+export const PageTitle = styled.p`
+  text-align: left;
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 10px;
 `;

@@ -7,13 +7,22 @@ export const Wrapper = styled.div`
 
 export const Paragraph = styled.p`
   margin-right: 5px;
+  @media (max-width: 600px) {
+    margin-right: 10px;
+    flex: 1;
+    text-align: left;
+  }
 `;
 
 export const DropDownContainer = styled.div`
   //width: 10.5em;
   margin: 0 auto;
   position: relative;
-  //padding: 200px;
+
+  @media (max-width: 600px) {
+    text-align: right;
+    width: 125px;
+  }
 `;
 
 export const DropDownHeader = styled.button`
@@ -50,12 +59,16 @@ export const DropDownList = styled.ul`
   &:first-child {
     padding-top: 0.8em;
   }
+  @media (max-width: 600px) {
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 export const ListItem = styled.li`
   list-style: none;
   margin-bottom: 3px;
   padding: 5px 0;
+  text-align: center;
   &:hover {
     color: #ffffff;
     background: #3faffa;

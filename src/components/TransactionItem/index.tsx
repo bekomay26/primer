@@ -9,8 +9,10 @@ import {
   RefundText,
   StatusDiv,
   MethodDiv,
+  OpenPageButton,
 } from "./style";
 import TransactionStatus from "../TransactionStatus";
+import { ReactComponent as RightIcon } from "../../assets/right-arrow.svg";
 
 const TransactionItem = ({
   id,
@@ -47,7 +49,9 @@ const TransactionItem = ({
       <OrderText>{orderId}</OrderText>
       <RefundText>{refunded && "Refunded"}</RefundText>
       <DateText>{date}</DateText>
-      <p onClick={onClick}>Click</p>
+      <OpenPageButton onClick={onClick}>
+        <RightIcon />
+      </OpenPageButton>
     </Wrapper>
   );
 };

@@ -1,7 +1,7 @@
-import { Head, Body } from "./style";
+import { Head, Body, PageTitle } from "./style";
 import { useEffect, useState } from "react";
-import { getAllPayments, getPaymentDetail } from "../../app/paymentAPI";
-import { formatAmount, formatDate } from "../../utils";
+import { getAllPayments } from "../../app/paymentAPI";
+import { formatDate } from "../../utils";
 import LoaderOverlay from "../../components/LoaderOverlay";
 import TransactionFilter from "../../components/TransactionFilter";
 import TransactionItem from "../../components/TransactionItem";
@@ -32,7 +32,7 @@ const TransactionsList = () => {
     <div>
       {loading && <LoaderOverlay />}
       <Head>
-        <p>Transactions</p>
+        <PageTitle>Transactions</PageTitle>
         <TransactionFilter
           payments={payments}
           updatePayments={onUpdateFilterPayments}
