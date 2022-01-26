@@ -1,5 +1,3 @@
-import React from "react";
-
 export const formatDate = (dateString: string) => {
   const theDate = new Date(dateString);
   return Intl.DateTimeFormat(undefined, {

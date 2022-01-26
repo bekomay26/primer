@@ -1,5 +1,4 @@
 import axios from "axios";
-import axiosRetry from "axios-retry";
 
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,

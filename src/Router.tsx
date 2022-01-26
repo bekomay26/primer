@@ -16,7 +16,7 @@ export const RoutingContext = createContext<RoutingContextType>({
   urlId: "",
 });
 
-export const Router = ({ children }) => {
+const Router = ({ children }) => {
   const urlPath = window.location.pathname.slice(1).toLowerCase();
 
   const [page, setPage] = useState(urlPath || pagesMapping.list);

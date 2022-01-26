@@ -6,7 +6,6 @@ import axiosRetry from "axios-retry";
 
 interface AuthContextInterface {
   isAuthenticated: boolean;
-  isAuthenticating: boolean;
 }
 
 const loginUsername =
@@ -18,17 +17,14 @@ const { Provider } = AuthContext;
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const login = async () => {
-    setIsAuthenticating(true);
     const bodyFormData = new FormData();
     bodyFormData.append("username", loginUsername);
     bodyFormData.append("password", loginPassword);
     const response: AxiosResponse = await loginUser(bodyFormData);
     localStorage.setItem("token", response?.data?.accessToken);
     setIsAuthenticated(true);
-    setIsAuthenticating(false);
   };
 
   axiosRetry(api, {
@@ -46,7 +42,6 @@ const AuthProvider = ({ children }) => {
     <Provider
       value={{
         isAuthenticated,
-        isAuthenticating,
       }}
     >
       {children}

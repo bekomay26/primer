@@ -32,9 +32,11 @@
         "react/prop-types": 0,
         "react/react-in-jsx-scope": 0,
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
+        "react-hooks/exhaustive-deps": "off",
 
         "no-use-before-define": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "import/extensions": [
             "error",
             "ignorePackages",
