@@ -19,6 +19,9 @@ export const AmountText = styled.p`
   min-width: 70px;
   text-align: right;
   margin-right: 15px;
+  @media (max-width: 600px) {
+    text-align: left;
+  }
 `;
 
 export const StatusDiv = styled.div`
