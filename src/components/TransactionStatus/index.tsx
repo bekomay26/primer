@@ -1,7 +1,7 @@
 import { Wrapper } from "./style";
 
-const TransactionStatus = ({ name }: { name: string }) => {
-  return <Wrapper name={name}>{name}</Wrapper>;
+const TransactionStatus = ({ mode, name }: { mode?: string; name: string }) => {
+  return <Wrapper mode={mode || name}>{name}</Wrapper>;
 };
 
 export default TransactionStatus;

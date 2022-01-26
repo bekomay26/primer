@@ -5,8 +5,8 @@ export const Wrapper = styled.p`
   font-size: 14px;
   display: inline-block;
   border-radius: 5px;
-  ${(props: { name: string }) => {
-    switch (props.name) {
+  ${(props: { mode: string }) => {
+    switch (props.mode) {
       case "FAILED":
       case "CANCELLED":
       case "DECLINED":
@@ -28,6 +28,12 @@ export const Wrapper = styled.p`
         return css`
           background-color: rgb(246, 255, 237);
           color: rgb(82, 196, 26);
+        `;
+      case "NEUTRAL":
+        return css`
+          background-color: rgb(250, 250, 250);
+          color: rgba(0, 0, 0, 0.85);
+          border: 1px solid #282c34;
         `;
       default:
         return css`

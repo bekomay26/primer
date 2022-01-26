@@ -30,3 +30,11 @@ export const InfoItems = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
 `;
+
+export const ThreeDInfo = styled.div`
+  text-align: left;
+  & > p {
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+`;

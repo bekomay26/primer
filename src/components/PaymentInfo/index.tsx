@@ -36,7 +36,7 @@ const PaymentInfo = ({
         <InfoItem label="Processor">
           <IconText>
             <TransactionProcessorIcon processorName={processor} />
-            {processor}
+            <span>{processor}</span>
           </IconText>
         </InfoItem>
         <InfoItem label="Payment Method">
@@ -44,7 +44,7 @@ const PaymentInfo = ({
             <TransactionMethodIcon methodName={paymentMethod} />
             {instrumentTypeToLabel[paymentInstrumentType] ||
               paymentInstrumentType}
-            / {paymentMethod}
+            {paymentMethod && `/ ${paymentMethod}`}
           </IconText>
         </InfoItem>
         <InfoItem label="Your reference">{orderId}</InfoItem>

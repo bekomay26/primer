@@ -1,14 +1,16 @@
-import { Wrapper, InfoItems, Body } from "./style";
+import { Wrapper, InfoItems, Body, ThreeDInfo } from "./style";
 import { useEffect, useState } from "react";
 import { getPaymentDetail } from "../../app/paymentAPI";
 import LoaderOverlay from "../../components/LoaderOverlay";
 import TransactionDetailHeader from "../../components/TransactionDetailHeader";
-import { formatAmount } from "../../utils";
+import { formatAmount, ThreeDSecureCodes } from "../../utils";
 import PaymentInfo from "../../components/PaymentInfo";
 import InfoItem from "../../components/InfoItem";
 import TransactionDetailBox from "../../components/TransactionDetailBox";
 import TransactionProcessorIcon from "../../components/TransactionProcessorIcon";
 import TransactionMethodIcon from "../../components/TransactionMethodIcon";
+import { ReactComponent as ThreeDSecureIcon } from "../../assets/3DS.svg";
+import TransactionStatus from "../../components/TransactionStatus";
 
 type PaymentType = {
   id?: string;
@@ -26,16 +28,26 @@ type PaymentType = {
   transactions?: any[];
 };
 
+type ThreeDType = {
+  responseCode?: string;
+};
+
 const TransactionDetail = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(true);
   const [payment, setPayment] = useState<PaymentType>({});
   const [paymentIsRefunded, setPaymentIsRefunded] = useState(false);
   const [transactionId, setTransactionId] = useState("");
+  const [processor, setProcessor] = useState("");
+  const [threeDSec, setThreeDSec] = useState<ThreeDType | null>(null);
+  const [instrumentData, setInstrumentData] = useState<any>({});
   const fetchPayment = async () => {
     const { data: paymentData }: { data: PaymentType } = await getPaymentDetail(
       id
     );
     setPayment(paymentData);
+    setProcessor(paymentData.processor);
+    setInstrumentData(paymentData?.paymentInstrument?.paymentInstrumentData);
+    setThreeDSec(paymentData?.paymentInstrument?.threeDSecureAuthentication);
     const saleTransId = paymentData.transactions.find(
       (tran) => tran.type === "SALE"
     );
@@ -71,9 +83,7 @@ const TransactionDetail = ({ id }: { id: string }) => {
         <PaymentInfo
           currency={payment.currencyCode}
           processor={payment.processor}
-          paymentMethod={
-            payment?.paymentInstrument?.paymentInstrumentData?.binData?.network
-          }
+          paymentMethod={instrumentData?.binData?.network}
           paymentInstrumentType={
             payment?.paymentInstrument?.paymentInstrumentType
           }
@@ -91,53 +101,53 @@ const TransactionDetail = ({ id }: { id: string }) => {
             <InfoItem label={"Account ID"}>
               <p>{payment.processorMerchantId}</p>
             </InfoItem>
-            <InfoItem label={"Transaction ID"}>
-              <p>{transactionId}</p>
-            </InfoItem>
-          </TransactionDetailBox>
-          <TransactionDetailBox
-            label="Payment Method"
-            logo={
-              <TransactionMethodIcon
-                methodName={
-                  payment?.paymentInstrument?.paymentInstrumentData?.binData
-                    ?.network
-                }
-              />
-            }
-          >
-            <InfoItem label={"Cardholder Name"}>
-              <p>
-                {
-                  payment?.paymentInstrument?.paymentInstrumentData
-                    ?.cardholderName
-                }
-              </p>
-            </InfoItem>
-            <InfoItems>
-              <InfoItem label={"Card Number"}>
-                <div>
-                  {
-                    payment?.paymentInstrument?.paymentInstrumentData
-                      ?.last4Digits
-                  }
-                </div>
+            {processor !== "PAYPAL" ? (
+              <InfoItem label={"Transaction ID"}>
+                <p>{transactionId}</p>
               </InfoItem>
-              <InfoItem label={"Expiration"}>
-                <p>
-                  {
-                    payment?.paymentInstrument?.paymentInstrumentData
-                      ?.expirationMonth
-                  }
-                  /
-                  {
-                    payment?.paymentInstrument?.paymentInstrumentData
-                      ?.expirationYear
-                  }
-                </p>
+            ) : (
+              <InfoItem label={"Paypal order ID"}>
+                <p>{instrumentData?.paypalOrderId}</p>
               </InfoItem>
-            </InfoItems>
+            )}
           </TransactionDetailBox>
+          {payment.processor !== "PAYPAL" && (
+            <TransactionDetailBox
+              label="Payment Method"
+              logo={
+                <TransactionMethodIcon
+                  methodName={instrumentData?.binData?.network}
+                />
+              }
+            >
+              <InfoItem label={"Cardholder Name"}>
+                <p>{instrumentData?.cardholderName}</p>
+              </InfoItem>
+              <InfoItems>
+                <InfoItem label={"Card Number"}>
+                  <div>{instrumentData?.last4Digits}</div>
+                </InfoItem>
+                <InfoItem label={"Expiration"}>
+                  <p>
+                    {instrumentData?.expirationMonth}/
+                    {instrumentData?.expirationYear}
+                  </p>
+                </InfoItem>
+              </InfoItems>
+            </TransactionDetailBox>
+          )}
+
+          {threeDSec && (
+            <TransactionDetailBox label="3D Secure" logo={<ThreeDSecureIcon />}>
+              <ThreeDInfo>
+                <p>Response code</p>
+                <TransactionStatus
+                  mode={ThreeDSecureCodes[threeDSec.responseCode].mode}
+                  name={ThreeDSecureCodes[threeDSec.responseCode].label}
+                />
+              </ThreeDInfo>
+            </TransactionDetailBox>
+          )}
         </Body>
       </>
     </Wrapper>

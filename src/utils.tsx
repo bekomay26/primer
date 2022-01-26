@@ -57,3 +57,7 @@ export const paymentMethods = [
   { label: "Amex", value: "AMEX" },
   { label: "JCB", value: "JCB" },
 ];
+
+export const ThreeDSecureCodes = {
+  NOT_PERFORMED: { label: "Not Performed", mode: "NEUTRAL" },
+};
