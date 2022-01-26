@@ -10,8 +10,8 @@ interface AuthContextInterface {
 }
 
 const loginUsername =
-  process.env.REACT_APP__PRIMER_USERNAME || "primer.candidate@primer.test";
-const loginPassword = process.env.REACT_APP__PRIMER_PASSWORD || "Candidate1234";
+  process.env.REACT_APP_PRIMER_USERNAME || "primer.candidate@primer.test";
+const loginPassword = process.env.REACT_APP_PRIMER_PASSWORD || "Candidate1234";
 
 const AuthContext = createContext<AuthContextInterface | null>(null);
 const { Provider } = AuthContext;
