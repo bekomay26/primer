@@ -34,8 +34,6 @@ export const IconText = styled.div`
 `;
 
 export const Status = styled.div`
-  //padding: 15px 20px;
-  //border: 1px solid black;
   height: 50px;
   width: 100px;
 

@@ -15,7 +15,6 @@ export const Paragraph = styled.p`
 `;
 
 export const DropDownContainer = styled.div`
-  //width: 10.5em;
   margin: 0 auto;
   position: relative;
 
@@ -26,11 +25,9 @@ export const DropDownContainer = styled.div`
 `;
 
 export const DropDownHeader = styled.button`
-  //margin-bottom: 0.8em;
   border: unset;
   background-color: unset;
   padding: 5px 10px;
-  //box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   font-weight: 500;
   font-size: 1rem;
   color: #3faffa;
@@ -45,12 +42,10 @@ export const DropDownListContainer = styled.div`
 `;
 
 export const DropDownList = styled.ul`
-  //padding: 0;
   margin: 0;
   padding-left: unset;
   background: #ffffff;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-  //border: 2px solid #e5e5e5;
   box-sizing: border-box;
   color: #3faffa;
   font-size: 14px;
