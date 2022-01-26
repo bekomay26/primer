@@ -9,6 +9,7 @@ import {
   SummaryDiv,
 } from "./style";
 import { pagesMapping, RoutingContext } from "../../Router";
+import { ReactComponent as RightIcon } from "../../assets/right-arrow.svg";
 
 type AmountDetailType = {
   isRefunded: boolean;
@@ -26,7 +27,10 @@ const TransactionDetailHeader = ({
   const { setPage } = useContext(RoutingContext);
   return (
     <Wrapper>
-      <Nav onClick={() => setPage(pagesMapping.list)}>Transactions</Nav>
+      <Nav onClick={() => setPage(pagesMapping.list)}>
+        <RightIcon />
+        <p>Transactions</p>
+      </Nav>
       <SummaryDiv>
         <AmountText>
           <span>{amount}</span>

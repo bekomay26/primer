@@ -8,6 +8,7 @@ import PaymentInfo from "../../components/PaymentInfo";
 import InfoItem from "../../components/InfoItem";
 import TransactionDetailBox from "../../components/TransactionDetailBox";
 import TransactionProcessorIcon from "../../components/TransactionProcessorIcon";
+import TransactionMethodIcon from "../../components/TransactionMethodIcon";
 
 type PaymentType = {
   id?: string;
@@ -76,7 +77,7 @@ const TransactionDetail = ({ id }: { id: string }) => {
           paymentInstrumentType={
             payment?.paymentInstrument?.paymentInstrumentType
           }
-          orderId={payment.processor}
+          orderId={payment.orderId}
           submissionDate={payment.date}
           status={payment.status}
         />
@@ -97,7 +98,12 @@ const TransactionDetail = ({ id }: { id: string }) => {
           <TransactionDetailBox
             label="Payment Method"
             logo={
-              <TransactionProcessorIcon processorName={payment.processor} />
+              <TransactionMethodIcon
+                methodName={
+                  payment?.paymentInstrument?.paymentInstrumentData?.binData
+                    ?.network
+                }
+              />
             }
           >
             <InfoItem label={"Cardholder Name"}>

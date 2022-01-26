@@ -4,6 +4,11 @@ export const Wrapper = styled.div`
   padding: 5px;
   margin-right: 10px;
   text-align: left;
+  @media (max-width: 600px) {
+    &:nth-child(3) {
+      width: 100%;
+    }
+  }
 `;
 
 export const Label = styled.p`

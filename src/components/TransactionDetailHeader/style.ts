@@ -4,8 +4,24 @@ export const Wrapper = styled.div`
   padding: 5px 10px;
 `;
 
-export const Nav = styled.p`
+export const Nav = styled.div`
   padding: 5px;
+  color: blue;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 120px;
+  justify-content: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid transparent;
+  &:hover {
+    border-bottom: 1px solid blue;
+  }
+  & > svg {
+    transform: rotate(180deg);
+    margin-right: 10px;
+    stroke: blue;
+  }
 `;
 
 export const SummaryDiv = styled.div`

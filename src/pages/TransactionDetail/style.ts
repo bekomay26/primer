@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   background-color: #dde2dc;
-  padding: 5px;
+  padding: 20px;
   height: 100vh;
   overflow-y: scroll;
 `;
@@ -12,8 +12,16 @@ export const Body = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 20px;
+  padding-bottom: 30px;
   & > div {
     width: 45%;
+  }
+
+  @media (max-width: 600px) {
+    & > div {
+      width: 100%;
+      margin-bottom: 10px;
+    }
   }
 `;
 
