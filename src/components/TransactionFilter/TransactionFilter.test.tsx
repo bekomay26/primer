@@ -70,27 +70,3 @@ it("Filter's payment by currency makes a request to the API", async () => {
   await waitFor(() => expect(mockOnUpdateLoadingState).toHaveBeenCalled());
   await waitFor(() => expect(mockOnUpdatePayments).toHaveBeenCalledTimes(1));
 });
-
-// jest.mock("lodash.debounce");
-
-// it("Filter payment by order id search doesn't make a request to the API", async () => {
-//   debounce.mockImplementation((fn) => fn);
-//   mockGetAllPayments.mockResolvedValueOnce({ data: payments });
-//   const mockOnUpdateLoadingState = jest.fn();
-//   const mockOnUpdatePayments = jest.fn();
-//   render(
-//     <TransactionFilter
-//       payments={payments}
-//       updatePayments={mockOnUpdatePayments}
-//       updateLoadingStatus={mockOnUpdateLoadingState}
-//     />
-//   );
-//
-//   const searchInput = screen.getByPlaceholderText("Search by your orderId");
-//   screen.debug(searchInput);
-//   // await waitFor(() => userEvent.type(searchInput, "TnLym"));
-//   searchInput.value = "TnLym";
-//   // await waitFor(() => expect(mockOnUpdatePayments).toHaveBeenCalledTimes(1));
-//   await waitFor(() => expect(mockOnUpdateLoadingState).toHaveBeenCalled());
-//   expect(mockGetAllPayments).not.toHaveBeenCalled();
-// });
