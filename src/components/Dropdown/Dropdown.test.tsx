@@ -28,8 +28,6 @@ it("Dropdown shows options list when clicked", () => {
   );
 
   expect(screen.getByText(/ALL/i)).toBeTruthy();
-  // expect(screen.getByRole("button", { expanded: false }));
-  // fireEvent.click(screen.getByText(/Choose/i));
   userEvent.click(screen.getByText(/ALL/i));
 
   expect(screen.getByText(/one/i)).toBeTruthy();

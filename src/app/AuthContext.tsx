@@ -48,10 +48,7 @@ const AuthProvider = ({ children }) => {
     bodyFormData.append("username", loginUsername);
     bodyFormData.append("password", loginPassword);
     const response: AxiosResponse = await loginUser(bodyFormData);
-    console.log(response);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     localStorage.setItem("token", response?.data?.accessToken);
-    // const responseJson = await response.json()
     setIsAuthenticated(true);
   };
 

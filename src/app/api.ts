@@ -7,7 +7,6 @@ const api = axios.create({
     Accept: "application/json",
   },
 });
-// api.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 api.interceptors.request.use(
   (request) => {
