@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import "./App.css";
-import TransactionsList from "./pages/TransactionsList";
+import TransactionsList from "./pages/TransactionList";
 import { AuthProvider } from "./app/AuthContext";
 import TransactionDetail from "./pages/TransactionDetail";
-import { pagesMapping, RoutingContext } from "./components/Router";
+import { pagesMapping, RoutingContext } from "./Router";
 
 function App() {
   const { page, urlId } = useContext(RoutingContext);

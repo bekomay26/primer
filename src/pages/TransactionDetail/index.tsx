@@ -1,36 +1,13 @@
-import styled from "styled-components";
-import { currencyToSymbol, formatAmount } from "../utils";
+import { Wrapper, InfoItems, Body } from "./style";
 import { useEffect, useState } from "react";
-import { getPaymentDetail } from "../app/paymentAPI";
-import TransactionDetailHeader from "../components/TransactionDetailHeader";
-import PaymentInfo from "../components/PaymentInfo";
-import TransactionDetailCard from "../components/TransactionDetailCard";
-import TransactionProcessorIcon from "../components/TransactionProcessorIcon";
-import InfoItem from "../components/InfoItem";
-import LoaderOverlay from "../components/LoaderOverlay";
-
-const Wrapper = styled.div`
-  background-color: #dde2dc;
-  padding: 5px;
-  height: 100vh;
-  overflow-y: scroll;
-`;
-
-const Body = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 20px;
-  & > div {
-    width: 45%;
-  }
-`;
-
-const InfoItems = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-`;
+import { getPaymentDetail } from "../../app/paymentAPI";
+import LoaderOverlay from "../../components/LoaderOverlay";
+import TransactionDetailHeader from "../../components/TransactionDetailHeader";
+import { formatAmount } from "../../utils";
+import PaymentInfo from "../../components/PaymentInfo";
+import InfoItem from "../../components/InfoItem";
+import TransactionDetailBox from "../../components/TransactionDetailBox";
+import TransactionProcessorIcon from "../../components/TransactionProcessorIcon";
 
 type PaymentType = {
   id?: string;
@@ -53,13 +30,10 @@ const TransactionDetail = ({ id }: { id: string }) => {
   const [payment, setPayment] = useState<PaymentType>({});
   const [paymentIsRefunded, setPaymentIsRefunded] = useState(false);
   const [transactionId, setTransactionId] = useState("");
-  //  const { currencyCode: currency, amount, refund, status } = props;
   const fetchPayment = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { data: paymentData }: { data: PaymentType } = await getPaymentDetail(
       id
     );
-    console.log(paymentData);
     setPayment(paymentData);
     const saleTransId = paymentData.transactions.find(
       (tran) => tran.type === "SALE"
@@ -72,7 +46,7 @@ const TransactionDetail = ({ id }: { id: string }) => {
     setLoading(false);
   };
   useEffect(() => {
-    void fetchPayment();
+    fetchPayment();
   }, [id]);
 
   if (loading) {
@@ -107,7 +81,7 @@ const TransactionDetail = ({ id }: { id: string }) => {
           status={payment.status}
         />
         <Body>
-          <TransactionDetailCard
+          <TransactionDetailBox
             label="Processor"
             logo={
               <TransactionProcessorIcon processorName={payment.processor} />
@@ -119,8 +93,8 @@ const TransactionDetail = ({ id }: { id: string }) => {
             <InfoItem label={"Transaction ID"}>
               <p>{transactionId}</p>
             </InfoItem>
-          </TransactionDetailCard>
-          <TransactionDetailCard
+          </TransactionDetailBox>
+          <TransactionDetailBox
             label="Payment Method"
             logo={
               <TransactionProcessorIcon processorName={payment.processor} />
@@ -142,7 +116,6 @@ const TransactionDetail = ({ id }: { id: string }) => {
                       ?.last4Digits
                   }
                 </div>
-                {/*<p>{transactionId}</p>*/}
               </InfoItem>
               <InfoItem label={"Expiration"}>
                 <p>
@@ -158,7 +131,7 @@ const TransactionDetail = ({ id }: { id: string }) => {
                 </p>
               </InfoItem>
             </InfoItems>
-          </TransactionDetailCard>
+          </TransactionDetailBox>
         </Body>
       </>
     </Wrapper>

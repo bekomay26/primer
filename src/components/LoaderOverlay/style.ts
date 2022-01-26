@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   //height: 100vh;
   width: 100%;
   height: 100%;
@@ -15,7 +13,7 @@ const Wrapper = styled.div`
   background: rgba(20, 20, 20, 0.2);
 `;
 
-const Spinner = styled.div`
+export const Spinner = styled.div`
   border: 6px solid #f3f3f3;
   border-radius: 50%;
   border-top: 6px solid #000000;
@@ -42,27 +40,3 @@ const Spinner = styled.div`
     }
   }
 `;
-
-const loaderRoot = document.getElementById("overlay");
-
-const LoaderOverlay = () => {
-  const elRef = useRef(null);
-
-  if (!elRef.current) {
-    elRef.current = document.createElement("div");
-  }
-
-  useEffect(() => {
-    loaderRoot.appendChild(elRef.current);
-    return () => loaderRoot.removeChild(elRef.current);
-  }, []);
-
-  return createPortal(
-    <Wrapper>
-      <Spinner />
-    </Wrapper>,
-    elRef.current
-  );
-};
-
-export default LoaderOverlay;

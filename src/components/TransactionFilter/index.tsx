@@ -1,45 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
 import debounce from "lodash.debounce";
-import Dropdown from "./Dropdown";
+import { getAllPayments } from "../../app/paymentAPI";
+import { Wrapper, Container, SearchInput } from "./style";
+import Dropdown from "../Dropdown";
 import {
-  transactionStatuses,
-  transactionCurrencies,
-  processors,
   paymentMethods,
-} from "../utils";
-import { getAllPayments } from "../app/paymentAPI";
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const Container = styled.div`
-  padding: 10px;
-  display: inline-flex;
-  align-items: center;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  & > div {
-    margin-left: 10px;
-    border-right: 1px solid #282c34;
-  }
-  & > div:last-child {
-    border-right: unset;
-  }
-  & > input {
-    border-right: 1px solid #282c34;
-  }
-  justify-content: flex-end;
-`;
-const SearchInput = styled.input`
-  padding: 5px 10px;
-  font-size: 14px;
-  border: unset;
-`;
+  processors,
+  transactionCurrencies,
+  transactionStatuses,
+} from "../../utils";
 
 type QueryFields = {
   status?: string;
@@ -86,8 +55,6 @@ const TransactionFilter = ({
   };
 
   useEffect(() => {
-    console.log("ffff");
-    console.log(filtering);
     if (payments.length && filtering) {
       getFilteredData();
     }
@@ -125,9 +92,12 @@ const TransactionFilter = ({
 
     let queryString = getQueryFields();
 
-    queryString = queryString ? "?" + queryString : "";
-
-    const { data: newPaymentData } = await getAllPayments({ queryString });
+    let newPaymentData = [...payments];
+    if (queryString.length > 0) {
+      queryString = "?" + queryString;
+      const { data } = await getAllPayments({ queryString });
+      newPaymentData = data;
+    }
     const otherQueryParams = getOtherQueryParams();
     const filteredData = newPaymentData.filter((item) => {
       for (const key in otherQueryParams) {

@@ -1,41 +1,14 @@
-import styled from "styled-components";
-import TransactionStatus from "../pages/TransactionStatus";
-import { formatDate } from "../utils";
-import InfoItem from "./InfoItem";
-import TransactionMethodIcon from "./TransactionMethodIcon";
-import TransactionProcessorIcon from "./TransactionProcessorIcon";
+import { Wrapper, Content, Status, IconText } from "./style";
+import InfoItem from "../InfoItem";
+import TransactionStatus from "../TransactionStatus";
+import TransactionProcessorIcon from "../TransactionProcessorIcon";
+import TransactionMethodIcon from "../TransactionMethodIcon";
+import { formatDate } from "../../utils";
 
 const instrumentTypeToLabel = {
   PAYMENT_CARD: "Card",
+  PAYPAL_ORDER: "Paypal",
 };
-
-const Wrapper = styled.div`
-  padding: 20px 30px;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-`;
-
-const Content = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const IconText = styled.div`
-  display: flex;
-  align-items: center;
-
-  & > div:first-child {
-    margin-right: 5px;
-  }
-`;
-
-const Status = styled.div`
-  padding: 15px 20px;
-  border: 1px solid black;
-`;
 
 type PaymentInfoType = {
   currency: string;

@@ -1,18 +1,10 @@
+import { Head, Body } from "./style";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { getAllPayments } from "../app/paymentAPI";
-import TransactionItem from "../components/TransactionItem";
-import { formatDate } from "../utils";
-import TransactionFilter from "../components/TransactionsFilter";
-import LoaderOverlay from "../components/LoaderOverlay";
-
-const Head = styled.div`
-  background-color: #dde2dc;
-  padding: 30px 10px;
-`;
-const Body = styled.div`
-  //display: table;
-`;
+import { getAllPayments, getPaymentDetail } from "../../app/paymentAPI";
+import { formatAmount, formatDate } from "../../utils";
+import LoaderOverlay from "../../components/LoaderOverlay";
+import TransactionFilter from "../../components/TransactionFilter";
+import TransactionItem from "../../components/TransactionItem";
 
 const TransactionsList = () => {
   const [loading, setLoading] = useState(true);
