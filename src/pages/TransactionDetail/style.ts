@@ -25,6 +25,11 @@ export const Body = styled.div`
   }
 `;
 
+export const HiddenCardText = styled.span`
+  font-size: 16px;
+  font-weight: 600;
+`;
+
 export const InfoItems = styled.div`
   display: flex;
   flex-wrap: wrap;

@@ -5,6 +5,7 @@ import {
   ThreeDInfo,
   ErrorPage,
   BackButton,
+  HiddenCardText,
 } from "./style";
 import { useContext, useEffect, useState } from "react";
 import { getPaymentDetail } from "../../app/paymentAPI";
@@ -158,7 +159,10 @@ const TransactionDetail = ({ id }: { id: string }) => {
               </InfoItem>
               <InfoItems>
                 <InfoItem label={"Card Number"}>
-                  <div>{instrumentData?.last4Digits}</div>
+                  <p>
+                    <HiddenCardText>.... .... ....</HiddenCardText>
+                    {instrumentData?.last4Digits}
+                  </p>
                 </InfoItem>
                 <InfoItem label={"Expiration"}>
                   <p>
