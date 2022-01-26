@@ -38,3 +38,41 @@ export const ThreeDInfo = styled.div`
     font-size: 12px;
   }
 `;
+
+export const ErrorPage = styled.div`
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+  & > p {
+    font-size: 24px;
+    color: red;
+  }
+`;
+
+export const BackButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: unset;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: #282c34;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: #282c34;
+    border: 1px solid #282c34;
+    background-color: white;
+  }
+
+  & > svg {
+    margin-right: 10px;
+    transform: rotate(180deg);
+    stroke: white;
+  }
+`;

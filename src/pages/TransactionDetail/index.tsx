@@ -1,5 +1,12 @@
-import { Wrapper, InfoItems, Body, ThreeDInfo } from "./style";
-import { useEffect, useState } from "react";
+import {
+  Wrapper,
+  InfoItems,
+  Body,
+  ThreeDInfo,
+  ErrorPage,
+  BackButton,
+} from "./style";
+import { useContext, useEffect, useState } from "react";
 import { getPaymentDetail } from "../../app/paymentAPI";
 import LoaderOverlay from "../../components/LoaderOverlay";
 import TransactionDetailHeader from "../../components/TransactionDetailHeader";
@@ -11,6 +18,8 @@ import TransactionProcessorIcon from "../../components/TransactionProcessorIcon"
 import TransactionMethodIcon from "../../components/TransactionMethodIcon";
 import { ReactComponent as ThreeDSecureIcon } from "../../assets/3DS.svg";
 import TransactionStatus from "../../components/TransactionStatus";
+import { pagesMapping, RoutingContext } from "../../Router";
+import { ReactComponent as RightIcon } from "../../assets/right-arrow.svg";
 
 type PaymentType = {
   id?: string;
@@ -40,22 +49,33 @@ const TransactionDetail = ({ id }: { id: string }) => {
   const [processor, setProcessor] = useState("");
   const [threeDSec, setThreeDSec] = useState<ThreeDType | null>(null);
   const [instrumentData, setInstrumentData] = useState<any>({});
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { setPage } = useContext(RoutingContext);
+
   const fetchPayment = async () => {
-    const { data: paymentData }: { data: PaymentType } = await getPaymentDetail(
-      id
-    );
-    setPayment(paymentData);
-    setProcessor(paymentData.processor);
-    setInstrumentData(paymentData?.paymentInstrument?.paymentInstrumentData);
-    setThreeDSec(paymentData?.paymentInstrument?.threeDSecureAuthentication);
-    const saleTransId = paymentData.transactions.find(
-      (tran) => tran.type === "SALE"
-    );
-    setTransactionId(
-      saleTransId?.processorTransactionId ||
-        paymentData.transactions[0]?.processorTransactionId
-    );
-    setPaymentIsRefunded(paymentData.amountRefunded > 0);
+    try {
+      const { data: paymentData }: { data: PaymentType } =
+        await getPaymentDetail(id);
+      setPayment(paymentData);
+      setProcessor(paymentData.processor);
+      setInstrumentData(paymentData?.paymentInstrument?.paymentInstrumentData);
+      setThreeDSec(paymentData?.paymentInstrument?.threeDSecureAuthentication);
+      const saleTransId = paymentData.transactions.find(
+        (tran) => tran.type === "SALE"
+      );
+      setTransactionId(
+        saleTransId?.processorTransactionId ||
+          paymentData.transactions[0]?.processorTransactionId
+      );
+      setPaymentIsRefunded(paymentData.amountRefunded > 0);
+    } catch (e) {
+      if (e.response) {
+        setHasError(true);
+        setErrorMessage(e.response.data?.error?.description);
+      }
+    }
     setLoading(false);
   };
   useEffect(() => {
@@ -64,6 +84,19 @@ const TransactionDetail = ({ id }: { id: string }) => {
 
   if (loading) {
     return <LoaderOverlay />;
+  }
+
+  if (hasError) {
+    return (
+      <ErrorPage>
+        <p>{errorMessage}</p>
+
+        <BackButton onClick={() => setPage(pagesMapping.list)}>
+          <RightIcon />
+          <p>Go back to transactions</p>
+        </BackButton>
+      </ErrorPage>
+    );
   }
   return (
     <Wrapper>

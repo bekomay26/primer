@@ -6,6 +6,7 @@ export const Head = styled.div`
 `;
 export const Body = styled.div`
   padding-bottom: 20px;
+  overflow-x: scroll;
 `;
 export const PageTitle = styled.p`
   text-align: left;

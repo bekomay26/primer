@@ -33,10 +33,10 @@ const AuthProvider = ({ children }) => {
 
   axiosRetry(api, {
     retryDelay: (retryCount) => {
+      login();
       return retryCount * 5000;
     },
     retryCondition: (error) => {
-      login();
       return error.response.status === 401;
     },
     retries: 2,
