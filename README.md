@@ -27,4 +27,4 @@ In the project directory, you can run:
 
 ### Run `npm test` to test
 
-Visit [Primer deployed site](https://61f0f0a81d4b1c000719cbd4--sharp-jennings-9fb50a.netlify.app/) to view the deployed project
+Visit [Primer deployed site](https://sharp-jennings-9fb50a.netlify.app/) to view the deployed project
