@@ -24,4 +24,8 @@ export const Value = styled.div`
   height: 30px;
   display: flex;
   align-items: center;
+
+  & > p {
+    word-break: break-word;
+  }
 `;
