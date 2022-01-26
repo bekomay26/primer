@@ -1,61 +1,52 @@
 import React, { createContext, useState } from "react";
 import api from "../app/api";
 import { loginUser } from "./authAPI";
-import { AxiosError, AxiosResponse } from "axios";
-
-type AuthResponse = {
-  accessToken: string;
-  tokenType: string;
-  scope: string;
-  scopes: string[];
-  primerAccounts: any[];
-  sessionPrimerAccountId: string;
-};
+import { AxiosResponse } from "axios";
+import axiosRetry from "axios-retry";
 
 interface AuthContextInterface {
   isAuthenticated: boolean;
-}
-
-type StatusResponse = {
-  status: number;
-};
-
-interface AuthErrorResponse {
-  response: StatusResponse;
+  isAuthenticating: boolean;
 }
 
 const loginUsername =
   process.env.REACT_APP__PRIMER_USERNAME || "primer.candidate@primer.test";
 const loginPassword = process.env.REACT_APP__PRIMER_PASSWORD || "Candidate1234";
 
-const AuthContextold = createContext<AuthContextInterface | null>(null);
-const { Provider } = AuthContextold;
+const AuthContext = createContext<AuthContextInterface | null>(null);
+const { Provider } = AuthContext;
 
 const AuthProvider = ({ children }) => {
-  const userToken = localStorage.getItem("token") || null;
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  api.interceptors.response.use(undefined, (error: AuthErrorResponse) => {
-    if (error.response.status === 401) {
-      void reLogin();
-    }
-    return Promise.reject(error);
-  });
-
-  const reLogin = async () => {
+  const login = async () => {
+    setIsAuthenticating(true);
     const bodyFormData = new FormData();
     bodyFormData.append("username", loginUsername);
     bodyFormData.append("password", loginPassword);
     const response: AxiosResponse = await loginUser(bodyFormData);
     localStorage.setItem("token", response?.data?.accessToken);
     setIsAuthenticated(true);
+    setIsAuthenticating(false);
   };
+
+  axiosRetry(api, {
+    retryDelay: (retryCount) => {
+      return retryCount * 5000;
+    },
+    retryCondition: (error) => {
+      login();
+      return error.response.status === 401;
+    },
+    retries: 2,
+  });
 
   return (
     <Provider
       value={{
         isAuthenticated,
+        isAuthenticating,
       }}
     >
       {children}
@@ -63,4 +54,4 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthContextold, AuthProvider };
+export { AuthContext, AuthProvider };

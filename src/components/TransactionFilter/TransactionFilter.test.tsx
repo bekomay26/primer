@@ -42,7 +42,7 @@ const payments = [
 
 jest.mock("../../app/paymentAPI");
 it("Filter's payment by currency makes a request to the API", async () => {
-  mockGetAllPayments.mockResolvedValueOnce({ data: payments });
+  (mockGetAllPayments as jest.Mock).mockResolvedValueOnce({ data: payments });
   const mockOnUpdateLoadingState = jest.fn();
   const mockOnUpdatePayments = jest.fn();
   render(
